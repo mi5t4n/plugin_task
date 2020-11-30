@@ -19,5 +19,16 @@
                 PLUGIN_TASK_VERSION,
                 true
             );
+
+            wp_localize_script(
+                'pt-admin',
+                'pt',
+                array(
+                    'i18n' => array(
+                        'submit'       => esc_html__( 'Submit', 'plugin_task' ),
+                        'invalidNonce' => esc_html__( 'Invalid nonce', 'plugin_task' )
+                    )
+                )
+            );
         }
     }
