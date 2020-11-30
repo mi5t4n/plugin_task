@@ -54,7 +54,7 @@
 			} else {
 				var notice = [
 					'<div class="notice notice-error">',
-					'<p>Invalid nonce</p>',
+					'<p>' + window.pt.i18n.invalidNonce + '</p>',
 					'</div>'
 				].join('');
 
@@ -62,7 +62,7 @@
 			}
 		}).always( function() {
 			$submit.addClass( 'button-primary' );
-			$submit.html( 'Submit' );
+			$submit.html( window.pt.i18n.submit );
 			$submit.prop( 'disabled', false );
 		});
 	} );
