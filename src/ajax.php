@@ -1,83 +1,15 @@
 <?php
-/**
- * Ajax.
- *
- * @package Plugin\Task
- *
- * @since 0.1.0
- */
+    add_action( 'wp_ajax_plugin_task_get_json', 'pt_get_json' );
 
-namespace Plugin\Task;
-
-defined( 'ABSPATH' ) || exit;
-
-/**
- * Aajx class.
- *
- * @class Plugin\Task\Ajax
- */
-
-class Ajax {
-
-	/**
-	 * Actions.
-	 *
-	 * @since 0.1.0
-	 *
-	 * @var array
-	 */
-	private $actions = array();
-
-
-	/**
-	 * Constructor.
-	 *
-	 * @since 0.1.0
-	 */
-	public function __construct() {
-		$this->init();
-	}
-	/**
-	 * Initialize
-	 *
-	 * @since 0.1.0
-	 */
-	private function init() {
-		$this->init_hooks();
-	}
-
-	/**
-	 * Initialize hooks.
-	 *
-	 * @since 0.1.0
-	 *
-	 * @return void
-	 */
-	private function init_hooks() {
-		$this->actions = apply_filters( 'plugin_task_ajax_actions', array(
-			'get_json' => array(
-				'priv'   => array( $this, 'get_json' ),
-			)
-		) );
-
-		foreach ( $this->actions as $key => $action ) {
-			foreach ( $action as $type => $callback ) {
-				$type = 'priv' === $type ? '' : '_nopriv';
-				$slug = PLUGIN_TASK_SLUG;
-				add_action( "wp_ajax{$type}_{$slug}_{$key}", $callback );
-			}
-		}
-	}
-
-	/**
+    /**
 	 * Get json data.
 	 *
 	 * @since 0.1.0
 	 *
 	 * @return void
 	 */
-	public function get_json() {
-		$data = $this->validate();
+	function pt_get_json() {
+		$data = pt_validate();
 
 		if ( is_wp_error( $data ) ) {
 			wp_send_json_error( $data, 400 );
@@ -113,7 +45,7 @@ class Ajax {
 	 *
 	 * @return WP_Error|mixed
 	 */
-	private function validate() {
+	function pt_validate() {
 		if ( false === check_admin_referer( 'plugin-task' ) ) {
 			return new \WP_Error(
 				'invalid_nonce',
@@ -140,4 +72,3 @@ class Ajax {
 
 		return $data;
 	}
-}
